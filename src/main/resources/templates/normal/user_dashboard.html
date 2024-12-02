@@ -1,0 +1,73 @@
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>User DashBoard</title>
+</head>
+<body>
+
+	<h1>welcome you are normal user</h1>
+	<h1>This is your private dashboard</h1>
+
+	<h1>
+		User Name :<span th:text="${user.name}"></span>
+	</h1>
+	<h1>
+		User Name : <span th:text="${user.email}"></span>
+	</h1>
+	<h1>
+		<a href="#" th:href="@{/logout}">Logout</a>
+	</h1>
+
+
+
+	1. add the dependency 
+	
+		spring-boot-starter-security
+		
+		2. provide the implimantation of UserDeatil ->customUserDetail
+		
+		3.provide the implementation of userDetailService ->userDetailServiceImpl
+		
+		4. WebSecurityConfigurationAdoptar
+	
+	
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>This is User_Dashboard page</title>
+</head>
+<body>
+	
+		<section>
+			<div class="container">
+				
+				<div class="card my-1 text-center">
+				
+					<div class="card-body">
+						
+						<div class="container text-center">
+							<img class="my_profile_piture" alt="profile photo" src=""
+								th:src="@{/img/contact_logo.png}"
+								style="height: 200px; width: 200px;">
+						</div>
+						
+						<h1 class="text-center mt-2 text-uppercase">
+						
+							start adding your contacts on cloud.....
+						</h1>
+						
+						<a th:href="@{/user/add-contact}" class="btn btn-primary btn-block text-uppercase mt-4">Add new contact</a>
+					</div>
+				
+				</div>
+			
+			</div>
+		</section>
+</body>
+</html>

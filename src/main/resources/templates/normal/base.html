@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:fragment="layout(content)">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" th:href="@{/css/style.css}">
+
+		<!-- this is for sweet alert -->
+<link
+	href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css"
+	rel="stylesheet">
+
+<title th:text="${title}">This is base page</title>
+</head>
+<body>
+	<!-- this is nav bar -->
+
+	<nav class="navbar navbar-expand-lg navbar-dark  bg-primary fixed-top">
+		<!-- changes here 2 , fixed-top--to fixed the side bar-->
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Smart Contact Manager</a>
+
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-uppercase">
+					<!-- changes here ms-auto ,text-uppercase-->
+
+					<li class="nav-item"><a class="nav-link active"
+						aria-current="page" href="#" th:href="@{/}">Home</a></li>
+					<!-- changes here -->
+
+
+
+					<!-- here we have replaced the username with login and removed the links -->
+					<li class="nav-item"><a class="nav-link " href="#"
+						tabindex="-1" aria-disabled="true"><span
+							th:text="${user.name}"></span></a></li>
+
+					<!-- here we have replaced the links from signup to logout-->
+					<li class="nav-item"><a class="nav-link " th:href="@{/logout}"
+						href="#" tabindex="-1" aria-disabled="true">Logout</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+	<div class="sidebar mt-5">
+
+		<span onclick="togglesidebar()" class="crossBtn"> &times;</span> <a
+			href="#" th:href="@{/user/index}" class="item"> <i
+			class="fa-solid fa-house"></i>Home
+		</a> <a href="#" th:href="@{/user/show-contacts/0}" class="item"> <i
+			class="fa-solid fa-book"></i>View Contacts
+		</a> <a href="#" th:href="@{/user/add-contact}" class="item"><i
+			class="fa-solid fa-address-book"></i>Add Contacts</a> <a href="#" th:href="@{/user/profile}"
+			class="item"><i class="fa-solid fa-user"></i>Your Profile</a> <a
+			href="#" class="item"><i class="fa-solid fa-gear"></i>Setting</a> <a
+			href="#" th:href="@{/logout}" class="item"><i
+			class="fa-solid fa-right-from-bracket"></i>Logout</a>
+		<div class="divider"></div>
+
+
+	</div>
+	<!-- end side bar -->
+	<div class="content mt-5">
+
+		<i onclick="togglesidebar()" class="fas fa-bars m-3"></i>
+
+		<!-- this is our message box  and dynamic alert message-->
+
+		<div th:if="${session.message}" class="container text-center">
+			<div class="alert " role="alert"
+				th:classappend="${'alert-'+session.message.type}">
+				<!-- this will print the content -->
+				<span th:text="${session.message.content}"></span>
+			</div>
+
+			<!-- removing --, because it is getting in another pages-->
+			<!-- this is removed in the new version of thymleaf -->
+			<!-- 		<th:block th:text="${#session.removeAttribute('message')}"></th:block> -->
+
+			<!-- this is the new way of removing the message,here after the @ we are going to use the class name in camelcase after that method name -->
+			<th:block th:text="${@sessionHelper.removeMessageFromSession}"></th:block>
+		</div>
+
+		<div th:replace="${content}"></div>
+	</div>
+	<!-- end content bar -->
+
+
+	<!-- Optional JavaScript; choose one of the two! -->
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+
+
+
+	<!-- jquery need to included and that's what we did  -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+		
+		
+		
+		<!-- this is for deleteContact -->
+		
+		<script>
+				
+			function deleteContact(cid){
+				Swal.fire({
+					  title: "Are you sure?",
+					  text: "You want to delete this contact",
+					  icon: "warning",
+					  showCancelButton: true,
+					  confirmButtonColor: "#3085d6",
+					  cancelButtonColor: "#d33",
+					  confirmButtonText: "Yes, delete it!",
+					}).then((result) => {
+					  if (result.isConfirmed) {
+					  
+						  //redirecting 
+						  window.location="/user/delete/"+cid;
+					  }
+					  else{
+						  swal("your contact is safe !!!!");
+					  }
+					});
+			}
+		
+		</script>
+
+	<!-- sweet alert -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+</body>
+</html>
